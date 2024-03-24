@@ -20,11 +20,11 @@ export class MyTabClass extends IControl {
         this._tabView = new TabView();
 
         const tab1 = new TabViewItem();
-        tab1.title = "Tab 1";
+        tab1.title = "CLEAN";
         tab1.view = this.createTab1Content();
 
         const tab2 = new TabViewItem();
-        tab2.title = "Tab 2";
+        tab2.title = "GRAFFITTI";
         tab2.view = this.createTab2Content();
 
         this._tabView.items = [tab1, tab2];
