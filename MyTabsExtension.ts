@@ -1,53 +1,77 @@
 import { IControl } from 'mdk-core/controls/IControl';
 import { BaseObservable } from 'mdk-core/observables/BaseObservable';
-import { Label, TextField } from '@nativescript/core';
-import { Color } from '@nativescript/core/color';
 import { StackLayout } from '@nativescript/core/ui/layouts/stack-layout';
+import { TextField } from '@nativescript/core/ui/text-field';
 import { TabView, TabViewItem } from '@nativescript/core/ui/tab-view';
+import { Color } from '@nativescript/core/color';
 
 export class MyTabClass extends IControl {
-    private _tabView: TabView;
     private _observable: BaseObservable;
+    private _tabView: TabView;
 
-    public view(): any {
-        if (!this._tabView) {
-            this._tabView = new TabView();
-            this._tabView.items = [];
+    public initialize(props): void {
+        super.initialize(props);
+        this.createTabView();
+    }
 
-            // Tab 1 setup
-            const tabItem1 = new TabViewItem();
-            tabItem1.title = "Tab 1";
-            const stackLayout1 = new StackLayout(); // Use a StackLayout to arrange inputs vertically
+    private createTabView(): void {
+        this._tabView = new TabView();
 
-            // Create three TextField inputs
-            for (let i = 1; i <= 3; i++) {
-                const input = new TextField();
-                input.hint = `Input ${i}`;
-                input.backgroundColor = new Color('lightgray');
-                stackLayout1.addChild(input); // Add each TextField to the StackLayout
-            }
+        // Create the first tab with input fields
+        const tab1 = new TabViewItem();
+        tab1.title = "Tab 1";
+        tab1.view = this.createInputFields();
 
-            tabItem1.view = stackLayout1; // Set the StackLayout as the view for Tab 1
+        // Create the second tab
+        const tab2 = new TabViewItem();
+        tab2.title = "Tab 2";
+        tab2.view = this.createSecondTabContent();
 
-            // Tab 2 setup
-            const tabItem2 = new TabViewItem();
-            tabItem2.title = "Tab 2";
-            const contentLabel2 = new Label();
-            contentLabel2.text = "Content of Tab 2";
-            contentLabel2.backgroundColor = new Color('lightblue');
-            tabItem2.view = contentLabel2;
+        this._tabView.items = [tab1, tab2]; // Include both tabs in the TabView
+    }
 
-            // Add both TabViewItems to the TabView's items array
-            this._tabView.items.push(tabItem1, tabItem2);
+    private createInputFields(): StackLayout {
+        const layout = new StackLayout();
+
+        // Create three interactive TextField components for input
+        for (let i = 1; i <= 3; i++) {
+            const textField = new TextField();
+            textField.hint = `Enter Value ${i}`;
+            textField.backgroundColor = new Color("#e0e0e0");
+            textField.margin = 10;
+            layout.addChild(textField);
         }
 
+        return layout;
+    }
+
+    private createSecondTabContent(): StackLayout {
+        const layout = new StackLayout();
+        const textField = new TextField();
+        textField.text = "Content of Tab 2";
+        textField.editable = false; // Make the TextField read-only
+        layout.addChild(textField);
+
+        return layout;
+    }
+
+    public view(): TabView {
         return this._tabView;
     }
 
-    public observable() {
+    public observable(): BaseObservable {
         if (!this._observable) {
             this._observable = new BaseObservable(this, this.definition(), this.page());
         }
         return this._observable;
+    }
+
+    public setContainer(container: IControl): void {
+        // Optional implementation
+    }
+
+    public setValue(value: any, notify: boolean, isTextValue?: boolean): Promise<any> {
+        // Optional implementation
+        return Promise.resolve();
     }
 }
