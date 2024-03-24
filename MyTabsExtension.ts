@@ -20,11 +20,11 @@ export class MyTabClass extends IControl {
         this._tabView = new TabView();
 
         const tab1 = new TabViewItem();
-        tab1.title = "CLEAN";
+        tab1.title = "Tab 1";
         tab1.view = this.createTab1Content();
 
         const tab2 = new TabViewItem();
-        tab2.title = "GAFFITTI";
+        tab2.title = "Tab 2";
         tab2.view = this.createSecondTabContent();
 
         this._tabView.items = [tab1, tab2];
@@ -33,7 +33,7 @@ export class MyTabClass extends IControl {
     private createTab1Content(): StackLayout {
         const layout = new StackLayout();
 
-        // Tab 1 fields
+        // List of fields to create in Tab 1
         const fields = [
             { label: "*Car Numbers" },
             { label: "*Clean Type" },
@@ -55,10 +55,14 @@ export class MyTabClass extends IControl {
                 layout.addChild(label);
             }
 
-            if (field.inputType === "text" || field.inputType === "number") {
+            if (field.inputType === "text") {
                 const textField = new TextField();
                 textField.hint = field.hint;
-                textField.keyboardType = field.inputType === "number" ? "number" : "default";
+                layout.addChild(textField);
+            } else if (field.inputType === "number") {
+                const textField = new TextField();
+                textField.hint = field.hint;
+                textField.keyboardType = "number";
                 layout.addChild(textField);
             } else if (field.inputType === "date") {
                 const datePicker = new DatePicker();
@@ -71,20 +75,10 @@ export class MyTabClass extends IControl {
 
     private createSecondTabContent(): StackLayout {
         const layout = new StackLayout();
-
-        // Car Numbers label
-        const carNumbersLabel = new Label();
-        carNumbersLabel.text = "Car Numbers";
-        layout.addChild(carNumbersLabel);
-
-        // Graffiti Identification Date label
-        const graffitiDateLabel = new Label();
-        graffitiDateLabel.text = "Graffiti Identification Date";
-        layout.addChild(graffitiDateLabel);
-
-        // DatePicker for Graffiti Identification Date
-        const datePicker = new DatePicker();
-        layout.addChild(datePicker);
+        const textField = new TextField();
+        textField.text = "Content of Tab 2";
+        textField.editable = false;
+        layout.addChild(textField);
 
         return layout;
     }
