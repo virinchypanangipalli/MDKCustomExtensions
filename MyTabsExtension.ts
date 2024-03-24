@@ -25,7 +25,7 @@ export class MyTabClass extends IControl {
 
         const tab2 = new TabViewItem();
         tab2.title = "Tab 2";
-        tab2.view = this.createSecondTabContent();
+        tab2.view = this.createTab2Content();
 
         this._tabView.items = [tab1, tab2];
     }
@@ -73,12 +73,39 @@ export class MyTabClass extends IControl {
         return layout;
     }
 
-    private createSecondTabContent(): StackLayout {
+    private createTab2Content(): StackLayout {
         const layout = new StackLayout();
-        const textField = new TextField();
-        textField.text = "Content of Tab 2";
-        textField.editable = false;
-        layout.addChild(textField);
+
+        // Add Tab 2 specific content here
+        // Example:
+        const label1 = new Label();
+        label1.text = "Graffiti Identification Date";
+        layout.addChild(label1);
+
+        const datePicker1 = new DatePicker();
+        layout.addChild(datePicker1);
+
+        // Additional Labels and Inputs for Tab 2 as requested
+        const additionalFields = [
+            { label: "Graffiti Type" },
+            { inputType: "text", hint: "Enter Graffiti Type" },
+            { label: "Reported By" },
+            { inputType: "text", hint: "Enter Reporter's Name" }
+        ];
+
+        additionalFields.forEach(field => {
+            if (field.label) {
+                const newLabel = new Label();
+                newLabel.text = field.label;
+                layout.addChild(newLabel);
+            }
+
+            if (field.inputType === "text") {
+                const newTextField = new TextField();
+                newTextField.hint = field.hint;
+                layout.addChild(newTextField);
+            }
+        });
 
         return layout;
     }
